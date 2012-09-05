@@ -1,0 +1,18 @@
+.src {
+  font-style: italic;
+  margin-right: 15px;
+}
+
+.dir { 
+  font-style: italic;
+  margin-right: 15px;
+  color     : red;
+}
+
+pre {
+  border: 1px solid blue;
+}
+
+address {
+  text-align: right;
+}

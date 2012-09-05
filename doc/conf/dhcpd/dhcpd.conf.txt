@@ -1,0 +1,1631 @@
+# dhcpd.conf
+#
+# Configuration file for ISC dhcpd (see 'man dhcpd.conf')
+
+server-identifier 133.13.48.3;
+option domain-name "ie.u-ryukyu.ac.jp";
+option domain-name-servers 133.13.48.3,133.13.48.2;
+not authoritative;
+#authoritative;
+ddns-update-style none;
+omapi-port 10004;
+
+log-facility local1;
+default-lease-time 600;
+max-lease-time 7200;
+
+#failover peer "dhcp-failover" {
+#  primary; # declare this to be the primary server
+#  address 133.13.48.3;
+#  port 10005;
+#  peer address 133.13.48.2;
+#  peer port 10005;
+#  max-response-delay 30;
+#  max-unacked-updates 10;
+#  load balance max seconds 3;
+#  mclt 1800;
+#  split 128;
+#}
+
+subnet 133.13.48.0 netmask 255.255.255.0 {
+  option domain-name-servers 133.13.48.3,133.13.48.2;
+  option domain-name "ie.u-ryukyu.ac.jp";
+  option routers 133.13.48.254;
+  option subnet-mask 255.255.255.0;
+  option broadcast-address 133.13.48.255;
+  default-lease-time 1200;
+  max-lease-time 7200;
+}
+  
+## Wireless LAN
+subnet 10.0.0.0 netmask 255.255.240.0 {
+  option domain-name-servers 133.13.48.3,133.13.48.2;
+  option domain-name "ie.u-ryukyu.ac.jp";
+  option routers 10.0.15.254;
+  option subnet-mask 255.255.240.0;
+  option broadcast-address 10.0.15.255;
+  default-lease-time 600;
+  max-lease-time 1800;
+  range 10.0.0.1 10.0.15.200;
+}
+
+subnet 10.0.16.0 netmask 255.255.240.0 {
+  option domain-name-servers 133.13.48.3,133.13.48.2;
+  option domain-name "ie.u-ryukyu.ac.jp";
+  option routers 10.0.31.254;
+  option subnet-mask 255.255.240.0;
+  option broadcast-address 10.0.31.255;
+  default-lease-time 600;
+  range 10.0.16.1 10.0.31.200;
+  max-lease-time 1800;
+}
+
+
+
+#group pxe {
+#  next-server futenma.ie.u-ryukyu.ac.jp;
+#  filename "/linux-install/pxelinux.0";
+#}
+
+
+ 
+## IE FLAT ZONE
+subnet 133.13.56.0 netmask 255.255.248.0 {
+  option domain-name-servers 133.13.48.3,133.13.48.2;
+  option domain-name "ie.u-ryukyu.ac.jp";
+  option routers 133.13.63.254;
+  option subnet-mask 255.255.248.0;
+  option broadcast-address 133.13.63.255;
+  default-lease-time 28800;
+  max-lease-time 86400;
+}
+
+## CLUSTER ZONE
+subnet 133.13.49.0 netmask 255.255.255.0 {
+  option domain-name-servers 133.13.48.3,133.13.48.2;
+  option domain-name "cs.ie.u-ryukyu.ac.jp";
+  option routers 133.13.49.254;
+  option subnet-mask 255.255.255.0;
+  option broadcast-address 133.13.49.255;
+  default-lease-time 28800;
+  max-lease-time 86400;
+
+  ### CLUSTER HOST
+
+  host pw001.cs {
+    hardware ethernet 00:19:DB:2F:93:5C;
+    fixed-address 133.13.49.1;
+  }
+  host pw002.cs {
+    hardware ethernet 00:19:DB:55:4E:E8;
+    fixed-address 133.13.49.2;
+  }
+  host pw003.cs {
+    hardware ethernet 00:19:DB:2F:93:6C;
+    fixed-address 133.13.49.3;
+  }
+  host pw004.cs {
+    hardware ethernet 00:19:DB:34:25:2E;
+    fixed-address 133.13.49.4;
+  }
+  host pw005.cs {
+    hardware ethernet 00:16:17:E3:08:E2;
+    fixed-address 133.13.49.5;
+  }
+  host pw006.cs {
+    hardware ethernet 00:19:DB:34:25:60;
+    fixed-address 133.13.49.6;
+  }
+  host pw007.cs {
+    hardware ethernet 00:19:DB:34:24:A6;
+    fixed-address 133.13.49.7;
+  }
+  host pw008.cs {
+    hardware ethernet 00:19:DB:55:4F:93;
+    fixed-address 133.13.49.8;
+  }
+  host pw009.cs {
+    hardware ethernet 00:19:DB:34:25:0C;
+    fixed-address 133.13.49.9;
+  }
+  host pw010.cs {
+    hardware ethernet 00:19:DB:2F:93:87;
+    fixed-address 133.13.49.10;
+  }
+  host pw011.cs {
+    hardware ethernet 00:19:DB:30:01:BC;
+    fixed-address 133.13.49.11;
+  }
+  host pw012.cs {
+    hardware ethernet 00:16:17:E3:08:74;
+    fixed-address 133.13.49.12;
+  }
+  host pw013.cs {
+    hardware ethernet 00:19:DB:2F:93:64;
+    fixed-address 133.13.49.13;
+  }
+  host pw014.cs {
+    hardware ethernet 00:19:DB:2F:94:52;
+    fixed-address 133.13.49.14;
+  }
+  host pw015.cs {
+    hardware ethernet 00:16:17:C7:E9:18;
+    fixed-address 133.13.49.15;
+  }
+  host pw016.cs {
+    hardware ethernet 00:19:DB:2F:94:23;
+    fixed-address 133.13.49.16;
+  }
+  host pw017.cs {
+    hardware ethernet 00:19:DB:34:24:A8;
+    fixed-address 133.13.49.17;
+  }
+  host pw018.cs {
+    hardware ethernet 00:19:DB:34:24:5C;
+    fixed-address 133.13.49.18;
+  }
+  host pw019.cs {
+    hardware ethernet 00:19:DB:2F:93:70;
+    fixed-address 133.13.49.19;
+  }
+  host pw020.cs {
+    hardware ethernet 00:19:DB:2F:93:4E;
+    fixed-address 133.13.49.20;
+  }
+  host pw021.cs {
+    hardware ethernet 00:19:DB:30:61:D8;
+    fixed-address 133.13.49.21;
+  }
+  host pw022.cs {
+    hardware ethernet 00:16:17:C7:D9:34;
+    fixed-address 133.13.49.22;
+  }
+  host pw023.cs {
+    hardware ethernet 00:19:DB:34:24:EE;
+    fixed-address 133.13.49.23;
+  }
+  host pw024.cs {
+    hardware ethernet 00:19:DB:34:24:96;
+    fixed-address 133.13.49.24;
+  }
+  host pw025.cs {
+    hardware ethernet 00:16:17:C7:D9:46;
+    fixed-address 133.13.49.25;
+  }
+  host pw026.cs {
+    hardware ethernet 00:19:DB:30:61:E7;
+    fixed-address 133.13.49.26;
+  }
+  host pw027.cs {
+    hardware ethernet 00:19:DB:2F:93:C5;
+    fixed-address 133.13.49.27;
+  }
+  host pw028.cs {
+    hardware ethernet 00:19:DB:58:08:14;
+    fixed-address 133.13.49.28;
+  }
+  host pw029.cs {
+    hardware ethernet 00:19:DB:2F:93:38;
+    fixed-address 133.13.49.29;
+  }
+  host pw030.cs {
+    hardware ethernet 00:19:DB:30:01:B2;
+    fixed-address 133.13.49.30;
+  }
+  host pw031.cs {
+    hardware ethernet 00:19:DB:34:24:F0;
+    fixed-address 133.13.49.31;
+  }
+  host pw032.cs {
+    hardware ethernet 00:19:DB:34:24:D2;
+    fixed-address 133.13.49.32;
+  }
+  host pw033.cs {
+    hardware ethernet 00:19:DB:2F:93:48;
+    fixed-address 133.13.49.33;
+  }
+  host pw034.cs {
+    hardware ethernet 00:16:17:C7:3E:DA;
+    fixed-address 133.13.49.34;
+  }
+  host pw035.cs {
+    hardware ethernet 00:19:DB:2F:93:91;
+    fixed-address 133.13.49.35;
+  }
+  host pw036.cs {
+    hardware ethernet 00:19:DB:34:25:52;
+    fixed-address 133.13.49.36;
+  }
+  host pw037.cs {
+    hardware ethernet 00:19:DB:55:4F:42;
+    fixed-address 133.13.49.37;
+  }
+  host pw038.cs {
+    hardware ethernet 00:19:DB:55:4F:0C;
+    fixed-address 133.13.49.38;
+  }
+  host pw039.cs {
+    hardware ethernet 00:19:DB:34:25:10;
+    fixed-address 133.13.49.39;
+  }
+  host pw040.cs {
+    hardware ethernet 00:19:DB:34:24:7E;
+    fixed-address 133.13.49.40;
+  }
+  host pw041.cs {
+    hardware ethernet 00:19:DB:34:25:22;
+    fixed-address 133.13.49.41;
+  }
+  host pw042.cs {
+    hardware ethernet 00:19:DB:34:25:72;
+    fixed-address 133.13.49.42;
+  }
+  host pw043.cs {
+    hardware ethernet 00:16:17:C7:D9:5A;
+    fixed-address 133.13.49.43;
+  }
+  host pw044.cs {
+    hardware ethernet 00:19:DB:2F:93:28;
+    fixed-address 133.13.49.44;
+  }
+  host pw045.cs {
+    hardware ethernet 00:19:DB:34:24:18;
+    fixed-address 133.13.49.45;
+  }
+  host pw046.cs {
+    hardware ethernet 00:19:DB:2F:93:F3;
+    fixed-address 133.13.49.46;
+  }
+  host pw047.cs {
+    hardware ethernet 00:19:DB:34:24:8A;
+    fixed-address 133.13.49.47;
+  }
+  host pw048.cs {
+    hardware ethernet 00:19:DB:34:24:54;
+    fixed-address 133.13.49.48;
+  }
+  host pw049.cs {
+    hardware ethernet 00:19:DB:2F:94:01;
+    fixed-address 133.13.49.49;
+  }
+  host pw050.cs {
+    hardware ethernet 00:19:DB:2F:93:F7;
+    fixed-address 133.13.49.50;
+  }
+  host pw051.cs {
+    hardware ethernet 00:19:DB:34:25:12;
+    fixed-address 133.13.49.51;
+  }
+  host pw052.cs {
+    hardware ethernet 00:19:DB:55:4F:AE;
+    fixed-address 133.13.49.52;
+  }
+  host pw053.cs {
+    hardware ethernet 00:16:17:C3:55:76;
+    fixed-address 133.13.49.53;
+  }
+  host pw054.cs {
+    hardware ethernet 00:16:17:C3:55:D8;
+    fixed-address 133.13.49.54;
+  }
+  host pw055.cs {
+    hardware ethernet 00:19:DB:2F:94:8A;
+    fixed-address 133.13.49.55;
+  }
+  host pw056.cs {
+    hardware ethernet 00:19:DB:2F:93:A1;
+    fixed-address 133.13.49.56;
+  }
+  host pw057.cs {
+    hardware ethernet 00:19:DB:34:25:18;
+    fixed-address 133.13.49.57;
+  }
+  host pw058.cs {
+    hardware ethernet 00:19:DB:34:24:B8;
+    fixed-address 133.13.49.58;
+  }
+  host pw059.cs {
+    hardware ethernet 00:19:DB:34:25:40;
+    fixed-address 133.13.49.59;
+  }
+  host pw060.cs {
+    hardware ethernet 00:19:DB:34:24:0E;
+    fixed-address 133.13.49.60;
+  }
+  host pw061.cs {
+    hardware ethernet 00:19:DB:2F:93:8B;
+    fixed-address 133.13.49.61;
+  }
+  host pw062.cs {
+    hardware ethernet 00:19:DB:2F:94:46;
+    fixed-address 133.13.49.62;
+  }
+  host pw063.cs {
+    hardware ethernet 00:19:DB:34:24:5E;
+    fixed-address 133.13.49.63;
+  }
+  host pw064.cs {
+    hardware ethernet 00:19:DB:34:24:EA;
+    fixed-address 133.13.49.64;
+  }
+  host pw065.cs {
+    hardware ethernet 00:19:DB:2F:94:07;
+    fixed-address 133.13.49.65;
+  }
+  host pw066.cs {
+    hardware ethernet 00:19:DB:2F:94:6E;
+    fixed-address 133.13.49.66;
+  }
+  host pw067.cs {
+    hardware ethernet 00:19:DB:55:4F:90;
+    fixed-address 133.13.49.67;
+  }
+  host pw068.cs {
+    hardware ethernet 00:19:DB:58:08:EC;
+    fixed-address 133.13.49.68;
+  }
+  host pw069.cs {
+    hardware ethernet 00:19:DB:34:24:98;
+    fixed-address 133.13.49.69;
+  }
+  host pw070.cs {
+    hardware ethernet 00:19:DB:34:25:20;
+    fixed-address 133.13.49.70;
+  }
+  host pw071.cs {
+    hardware ethernet 00:19:DB:34:25:80;
+    fixed-address 133.13.49.71;
+  }
+  host pw072.cs {
+    hardware ethernet 00:19:DB:34:24:42;
+    fixed-address 133.13.49.72;
+  }
+  host pw073.cs {
+    hardware ethernet 00:19:DB:34:25:36;
+    fixed-address 133.13.49.73;
+  }
+  host pw074.cs {
+    hardware ethernet 00:19:DB:2F:93:C3;
+    fixed-address 133.13.49.74;
+  }
+  host pw075.cs {
+    hardware ethernet 00:16:17:C3:55:C6;
+    fixed-address 133.13.49.75;
+  }
+  host pw076.cs {
+    hardware ethernet 00:19:DB:34:24:E0;
+    fixed-address 133.13.49.76;
+  }
+  host pw077.cs {
+    hardware ethernet 00:16:17:A5:29:30;
+    fixed-address 133.13.49.77;
+  }
+  host pw078.cs {
+    hardware ethernet 00:19:DB:34:25:92;
+    fixed-address 133.13.49.78;
+  }
+  host pw079.cs {
+    hardware ethernet 00:19:DB:34:24:3A;
+    fixed-address 133.13.49.79;
+  }
+  host pw080.cs {
+    hardware ethernet 00:19:DB:2F:93:D7;
+    fixed-address 133.13.49.80;
+  }
+  host pw081.cs {
+    hardware ethernet 00:19:DB:30:61:DE;
+    fixed-address 133.13.49.81;
+  }
+  host pw082.cs {
+    hardware ethernet 00:19:DB:34:25:74;
+    fixed-address 133.13.49.82;
+  }
+  host pw083.cs {
+    hardware ethernet 00:19:DB:34:24:DA;
+    fixed-address 133.13.49.83;
+  }
+  host pw084.cs {
+    hardware ethernet 00:19:DB:34:25:7C;
+    fixed-address 133.13.49.84;
+  }
+  host pw085.cs {
+    hardware ethernet 00:19:DB:2F:92:91;
+    fixed-address 133.13.49.85;
+  }
+  host pw086.cs {
+    hardware ethernet 00:19:DB:34:25:46;
+    fixed-address 133.13.49.86;
+  }
+  host pw087.cs {
+    hardware ethernet 00:19:DB:2F:94:4A;
+    fixed-address 133.13.49.87;
+  }
+  host pw088.cs {
+    hardware ethernet 00:16:17:C3:55:E4;
+    fixed-address 133.13.49.88;
+  }
+  host pw089.cs {
+    hardware ethernet 00:16:17:C7:D9:44;
+    fixed-address 133.13.49.89;
+  }
+  host pw090.cs {
+    hardware ethernet 00:19:DB:34:24:4E;
+    fixed-address 133.13.49.90;
+  }
+  host pw091.cs {
+    hardware ethernet 00:19:DB:34:25:5C;
+    fixed-address 133.13.49.91;
+  }
+  host pw092.cs {
+    hardware ethernet 00:19:DB:34:24:A2;
+    fixed-address 133.13.49.92;
+  }
+  host pw093.cs {
+    hardware ethernet 00:19:DB:34:24:80;
+    fixed-address 133.13.49.93;
+  }
+  host pw094.cs {
+    hardware ethernet 00:19:DB:34:24:36;
+    fixed-address 133.13.49.94;
+  }
+  host pw095.cs {
+    hardware ethernet 00:19:DB:58:08:42;
+    fixed-address 133.13.49.95;
+  }
+  host pw096.cs {
+    hardware ethernet 00:19:DB:30:01:98;
+    fixed-address 133.13.49.96;
+  }
+  host pw097.cs {
+    hardware ethernet 00:19:DB:34:24:88;
+    fixed-address 133.13.49.97;
+  }
+  host pw098.cs {
+    hardware ethernet 00:19:DB:58:08:4E;
+    fixed-address 133.13.49.98;
+  }
+  host pw099.cs {
+    hardware ethernet 00:19:DB:34:24:0A;
+    fixed-address 133.13.49.99;
+  }
+  host pw100.cs {
+    hardware ethernet 00:19:DB:2F:94:66;
+    fixed-address 133.13.49.100;
+  }
+  host pw101.cs {
+    hardware ethernet 00:19:DB:55:4F:27;
+    fixed-address 133.13.49.101;
+  }
+  host pw102.cs {
+    hardware ethernet 00:16:17:C7:D9:32;
+    fixed-address 133.13.49.102;
+  }
+  host pw103.cs {
+    hardware ethernet 00:19:DB:34:24:FC;
+    fixed-address 133.13.49.103;
+  }
+  host pw104.cs {
+    hardware ethernet 00:19:DB:34:25:48;
+    fixed-address 133.13.49.104;
+  }
+  host pw105.cs {
+    hardware ethernet 00:16:17:C7:E9:15;
+    fixed-address 133.13.49.105;
+  }
+  host pw106.cs {
+    hardware ethernet 00:19:DB:34:24:FE;
+    fixed-address 133.13.49.106;
+  }
+  host pw107.cs {
+    hardware ethernet 00:19:DB:55:4F:C3;
+    fixed-address 133.13.49.107;
+  }
+  host pw108.cs {
+    hardware ethernet 00:19:DB:34:24:F2;
+    fixed-address 133.13.49.108;
+  }
+  host pw109.cs {
+    hardware ethernet 00:19:DB:34:24:B2;
+    fixed-address 133.13.49.109;
+  }
+  host pw110.cs {
+    hardware ethernet 00:19:DB:2F:94:31;
+    fixed-address 133.13.49.110;
+  }
+  host pw111.cs {
+    hardware ethernet 00:19:DB:2F:93:40;
+    fixed-address 133.13.49.111;
+  }
+  host pw112.cs {
+    hardware ethernet 00:19:DB:34:24:12;
+    fixed-address 133.13.49.112;
+  }
+  host pw113.cs {
+    hardware ethernet 00:19:DB:2F:94:76;
+    fixed-address 133.13.49.113;
+  }
+  host pw114.cs {
+    hardware ethernet 00:19:DB:34:24:E8;
+    fixed-address 133.13.49.114;
+  }
+  host pw115.cs {
+    hardware ethernet 00:16:17:C6:C9:84;
+    fixed-address 133.13.49.115;
+  }
+  host pw116.cs {
+    hardware ethernet 00:19:DB:34:24:60;
+    fixed-address 133.13.49.116;
+  }
+  host pw117.cs {
+    hardware ethernet 00:19:DB:2F:92:8F;
+    fixed-address 133.13.49.117;
+  }
+  host pw118.cs {
+    hardware ethernet 00:16:17:E3:08:6B;
+    fixed-address 133.13.49.118;
+  }
+  host pw119.cs {
+    hardware ethernet 00:19:DB:34:25:62;
+    fixed-address 133.13.49.119;
+  }
+  host pw120.cs {
+    hardware ethernet 00:19:DB:34:24:6E;
+    fixed-address 133.13.49.120;
+  }
+  host pw121.cs {
+    hardware ethernet 00:19:DB:2F:3F:32;
+    fixed-address 133.13.49.121;
+  }
+  host pw122.cs {
+    hardware ethernet 00:19:DB:34:25:6A;
+    fixed-address 133.13.49.122;
+  }
+  host pw123.cs {
+    hardware ethernet 00:19:DB:55:4E:D3;
+    fixed-address 133.13.49.123;
+  }
+  host pw124.cs {
+    hardware ethernet 00:19:DB:34:24:64;
+    fixed-address 133.13.49.124;
+  }
+  host pw125.cs {
+    hardware ethernet 00:19:DB:34:24:B0;
+    fixed-address 133.13.49.125;
+  }
+  host pw126.cs {
+    hardware ethernet 00:19:DB:2F:93:4A;
+    fixed-address 133.13.49.126;
+  }
+  host pw127.cs {
+    hardware ethernet 00:19:DB:34:25:76;
+    fixed-address 133.13.49.127;
+  }
+  host pw128.cs {
+    hardware ethernet 00:19:DB:34:24:CC;
+    fixed-address 133.13.49.128;
+  }
+  host pw129.cs {
+    hardware ethernet 00:19:DB:2F:93:2C;
+    fixed-address 133.13.49.129;
+  }
+  host pw130.cs {
+    hardware ethernet 00:19:DB:2F:93:68;
+    fixed-address 133.13.49.130;
+  }
+  host pw131.cs {
+    hardware ethernet 00:19:DB:34:25:88;
+    fixed-address 133.13.49.131;
+  }
+  host pw132.cs {
+    hardware ethernet 00:19:DB:34:24:AE;
+    fixed-address 133.13.49.132;
+  }
+  host pw133.cs {
+    hardware ethernet 00:19:DB:2F:93:89;
+    fixed-address 133.13.49.133;
+  }
+  host pw134.cs {
+    hardware ethernet 00:16:17:E0:AC:9B;
+    fixed-address 133.13.49.134;
+  }
+  host pw135.cs {
+    hardware ethernet 00:19:DB:34:24:EC;
+    fixed-address 133.13.49.135;
+  }
+  host pw136.cs {
+    hardware ethernet 00:19:db:2f:93:6e;
+    fixed-address 133.13.49.136;
+  }
+  host pw137.cs {
+    hardware ethernet 00:19:db:2f:93:22;
+    fixed-address 133.13.49.137;
+  }
+  host pw138.cs {
+    hardware ethernet 00:19:DB:34:25:28;
+    fixed-address 133.13.49.138;
+  }
+  host pw139.cs {
+    hardware ethernet 00:19:DB:34:25:6C;
+    fixed-address 133.13.49.139;
+  }
+  host pw140.cs {
+    hardware ethernet 00:19:DB:55:4F:5A;
+    fixed-address 133.13.49.140;
+  }
+  host pw141.cs {
+    hardware ethernet 00:19:DB:2F:94:7C;
+    fixed-address 133.13.49.141;
+  }
+  host pw142.cs {
+    hardware ethernet 00:19:DB:2F:93:34;
+    fixed-address 133.13.49.142;
+  }
+  host pw143.cs {
+    hardware ethernet 00:16:17:E2:CD:EA;
+    fixed-address 133.13.49.143;
+  }
+  host pw144.cs {
+    hardware ethernet 00:19:DB:58:08:0C;
+    fixed-address 133.13.49.144;
+  }
+  host pw145.cs {
+    hardware ethernet 00:19:DB:2F:93:93;
+    fixed-address 133.13.49.145;
+  }
+  host pw146.cs {
+    hardware ethernet 00:16:17:C7:D9:80;
+    fixed-address 133.13.49.146;
+  }
+  host pw147.cs {
+    hardware ethernet 00:19:DB:58:08:26;
+    fixed-address 133.13.49.147;
+  }
+  host pw148.cs {
+    hardware ethernet 00:19:DB:34:24:2E;
+    fixed-address 133.13.49.148;
+  }
+  host pw149.cs {
+    hardware ethernet 00:19:DB:55:4F:4B;
+    fixed-address 133.13.49.149;
+  }
+  host pw150.cs {
+    hardware ethernet 00:19:DB:34:25:84;
+    fixed-address 133.13.49.150;
+  }
+  host pw151.cs {
+    hardware ethernet 00:19:DB:34:24:20;
+    fixed-address 133.13.49.151;
+  }
+  host pw152.cs {
+    hardware ethernet 00:19:DB:34:24:1A;
+    fixed-address 133.13.49.152;
+  }
+  host pw153.cs {
+    hardware ethernet 00:19:DB:34:25:2A;
+    fixed-address 133.13.49.153;
+  }
+  host pw154.cs {
+    hardware ethernet 00:19:DB:2F:94:33;
+    fixed-address 133.13.49.154;
+  }
+  host pw155.cs {
+    hardware ethernet 00:19:DB:34:24:86;
+    fixed-address 133.13.49.155;
+  }
+  host pw156.cs {
+    hardware ethernet 00:19:DB:34:24:56;
+    fixed-address 133.13.49.156;
+  }
+  host pw157.cs {
+    hardware ethernet 00:19:DB:2F:93:76;
+    fixed-address 133.13.49.157;
+  }
+  host pw158.cs {
+    hardware ethernet 00:19:DB:2F:93:58;
+    fixed-address 133.13.49.158;
+  }
+  host pw159.cs {
+    hardware ethernet 00:19:DB:34:24:1C;
+    fixed-address 133.13.49.159;
+  }
+  host pw160.cs {
+    hardware ethernet 00:19:DB:55:4F:06;
+    fixed-address 133.13.49.160;
+  }
+  host pw161.cs {
+    hardware ethernet 00:19:DB:2F:3F:36;
+    fixed-address 133.13.49.161;
+  }
+  host pw162.cs {
+    hardware ethernet 00:19:DB:34:24:68;
+    fixed-address 133.13.49.162;
+  }
+  host pw163.cs {
+    hardware ethernet 00:19:DB:30:01:92;
+    fixed-address 133.13.49.163;
+  }
+  host pw164.cs {
+    hardware ethernet 00:19:DB:34:25:14;
+    fixed-address 133.13.49.164;
+  }
+  host pw165.cs {
+    hardware ethernet 00:19:DB:34:24:F4;
+    fixed-address 133.13.49.165;
+  }
+  host pw166.cs {
+    hardware ethernet 00:19:DB:34:25:3A;
+    fixed-address 133.13.49.166;
+  }
+  host pw167.cs {
+    hardware ethernet 00:19:DB:55:4F:66;
+    fixed-address 133.13.49.167;
+  }
+  host pw168.cs {
+    hardware ethernet 00:19:DB:34:25:6E;
+    fixed-address 133.13.49.168;
+  }
+  host pw169.cs {
+    hardware ethernet 00:19:DB:2F:93:A7;
+    fixed-address 133.13.49.169;
+  }
+  host pw170.cs {
+    hardware ethernet 00:19:DB:34:25:3E;
+    fixed-address 133.13.49.170;
+  }
+  host pw171.cs {
+    hardware ethernet 00:19:DB:34:24:E4;
+    fixed-address 133.13.49.171;
+  }
+  host pw172.cs {
+    hardware ethernet 00:19:DB:34:24:84;
+    fixed-address 133.13.49.172;
+  }
+  host pw173.cs {
+    hardware ethernet 00:19:DB:2F:93:D3;
+    fixed-address 133.13.49.173;
+  }
+  host pw174.cs {
+    hardware ethernet 00:19:DB:2F:94:72;
+    fixed-address 133.13.49.174;
+  }
+  host pw175.cs {
+    hardware ethernet 00:19:DB:2F:94:5A;
+    fixed-address 133.13.49.175;
+  }
+  host pw176.cs {
+    hardware ethernet 00:19:DB:2F:93:F1;
+    fixed-address 133.13.49.176;
+  }
+  host pw177.cs {
+    hardware ethernet 00:19:DB:34:24:66;
+    fixed-address 133.13.49.177;
+  }
+  host pw178.cs {
+    hardware ethernet 00:19:DB:34:24:DC;
+    fixed-address 133.13.49.178;
+  }
+  host pw179.cs {
+    hardware ethernet 00:19:DB:34:24:8C;
+    fixed-address 133.13.49.179;
+  }
+  host pw180.cs {
+    hardware ethernet 00:16:17:C7:D9:7E;
+    fixed-address 133.13.49.180;
+  }
+  host im01.cs {
+    hardware ethernet 00:17:f2:c9:81:ff;
+    fixed-address 133.13.49.231;
+  }
+  host im02.cs {
+    hardware ethernet 00:17:f2:c9:80:bc;
+    fixed-address 133.13.49.232;
+  }
+  host im03.cs {
+    hardware ethernet 00:17:f2:c9:81:e2;
+    fixed-address 133.13.49.233;
+  }
+  host im04.cs {
+    hardware ethernet 00:17:f2:c9:81:e0;
+    fixed-address 133.13.49.234;
+  }
+  host im05.cs {
+    hardware ethernet 00:17:f2:c9:80:f8;
+    fixed-address 133.13.49.235;
+  }
+  host im06.cs {
+    hardware ethernet 00:17:f2:c9:81:c1;
+    fixed-address 133.13.49.236;
+  }
+  host im07.cs {
+    hardware ethernet 00:17:f2:c9:80:be;
+    fixed-address 133.13.49.237;
+  }
+  host im08.cs {
+    hardware ethernet 00:17:f2:c9:81:63;
+    fixed-address 133.13.49.238;
+  }
+  host im09.cs {
+    hardware ethernet 00:17:f2:c9:80:dd;
+    fixed-address 133.13.49.239;
+  }
+  host im10.cs {
+    hardware ethernet 00:17:f2:ca:85:72;
+    fixed-address 133.13.49.240;
+  }
+  host im11.cs {
+    hardware ethernet 00:17:f2:ca:85:5a;
+    fixed-address 133.13.49.241;
+  }
+  host im12.cs {
+    hardware ethernet 00:17:f2:c9:81:0f;
+    fixed-address 133.13.49.242;
+  }
+  host im13.cs {
+    hardware ethernet 00:17:f2:c9:81:ad;
+    fixed-address 133.13.49.243;
+  }
+  host im14.cs {
+    hardware ethernet 00:17:f2:c9:81:8e;
+    fixed-address 133.13.49.244;
+  }
+  host im15.cs {
+    hardware ethernet 00:17:f2:c9:80:c6;
+    fixed-address 133.13.49.245;
+  }
+  host im16.cs {
+    hardware ethernet 00:17:f2:c9:82:40;
+    fixed-address 133.13.49.246;
+  }
+  host im17.cs {
+    hardware ethernet 00:17:f2:c9:81:24;
+    fixed-address 133.13.49.247;
+  }
+  host im18.cs {
+    hardware ethernet 00:17:f2:c9:81:7c;
+    fixed-address 133.13.49.248;
+  }
+  host im19.cs {
+    hardware ethernet 00:17:f2:c9:81:85;
+    fixed-address 133.13.49.249;
+  }
+  host im20.cs {
+    hardware ethernet 00:17:f2:c9:81:25;
+    fixed-address 133.13.49.250;
+  }
+  host im21.cs {
+    hardware ethernet 00:17:f2:c9:82:3f;
+    fixed-address 133.13.49.251;
+  }
+}  
+  
+## Cluster IPMITool
+subnet 10.10.49.0 netmask 255.255.255.0 {
+  option domain-name-servers 133.13.48.3,133.13.48.2;
+  option domain-name "ie.u-ryukyu.ac.jp";
+  option routers 10.10.49.254;
+  option subnet-mask 255.255.255.0;
+  option broadcast-address 10.10.49.255;
+  default-lease-time 28800;
+  max-lease-time 86400;
+   
+  host pw001.cs-ipmi {
+    hardware ethernet 00:19:db:30:00:f9;
+    fixed-address 10.10.49.1;
+  }
+  host pw002.cs-ipmi {
+    hardware ethernet 00:19:DB:55:4E:E7;
+    fixed-address 10.10.49.2;
+  }
+  host pw003.cs-ipmi {
+    hardware ethernet 00:19:DB:30:00:EA;
+    fixed-address 10.10.49.3;
+  }
+  host pw004.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:56;
+    fixed-address 10.10.49.4;
+  }
+  host pw005.cs-ipmi {
+    hardware ethernet 00:16:17:E3:08:5B;
+    fixed-address 10.10.49.5;
+  }
+  host pw006.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:69;
+    fixed-address 10.10.49.6;
+  }
+  host pw007.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:DB;
+    fixed-address 10.10.49.7;
+  }
+  host pw008.cs-ipmi {
+    hardware ethernet 00:19:DB:55:4F:92;
+    fixed-address 10.10.49.8;
+  }
+  host pw009.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:46;
+    fixed-address 10.10.49.9;
+  }
+  host pw010.cs-ipmi {
+    hardware ethernet 00:19:DB:30:00:DE;
+    fixed-address 10.10.49.10;
+  }
+  host pw011.cs-ipmi {
+    hardware ethernet 00:19:DB:30:00:BB;
+    fixed-address 10.10.49.11;
+  }
+  host pw012.cs-ipmi {
+    hardware ethernet 00:16:17:E3:08:76;
+    fixed-address 10.10.49.12;
+  }
+  host pw013.cs-ipmi {
+    hardware ethernet 00:19:DB:30:00:EE;
+    fixed-address 10.10.49.13;
+  }
+  host pw014.cs-ipmi {
+    hardware ethernet 00:19:DB:2F:94:AB;
+    fixed-address 10.10.49.14;
+  }
+  host pw015.cs-ipmi {
+    hardware ethernet 00:16:17:C7:E9:1A;
+    fixed-address 10.10.49.15;
+  }
+  host pw016.cs-ipmi {
+    hardware ethernet 00:19:DB:2F:94:C1;
+    fixed-address 10.10.49.16;
+  }
+  host pw017.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:D8;
+    fixed-address 10.10.49.17;
+  }
+  host pw018.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:B6;
+    fixed-address 10.10.49.18;
+  }
+  host pw019.cs-ipmi {
+    hardware ethernet 00:19:DB:30:00:E8;
+    fixed-address 10.10.49.19;
+  }
+  host pw020.cs-ipmi {
+    hardware ethernet 00:19:DB:30:00:F7;
+    fixed-address 10.10.49.20;
+  }
+  host pw021.cs-ipmi {
+    hardware ethernet 00:19:DB:30:61:DA;
+    fixed-address 10.10.49.21;
+  }
+  host pw022.cs-ipmi {
+    hardware ethernet 00:16:17:C7:3F:20;
+    fixed-address 10.10.49.22;
+  }
+  host pw023.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:38;
+    fixed-address 10.10.49.23;
+  }
+  host pw024.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:D1;
+    fixed-address 10.10.49.24;
+  }
+  host pw025.cs-ipmi {
+    hardware ethernet 00:16:17:C7:3F:26;
+    fixed-address 10.10.49.25;
+  }
+  host pw026.cs-ipmi {
+    hardware ethernet 00:19:DB:30:61:E9;
+    fixed-address 10.10.49.26;
+  }
+  host pw027.cs-ipmi {
+    hardware ethernet 00:19:DB:30:00:C0;
+    fixed-address 10.10.49.27;
+  }
+  host pw028.cs-ipmi {
+    hardware ethernet 00:19:DB:58:07:58;
+    fixed-address 10.10.49.28;
+  }
+  host pw029.cs-ipmi {
+    hardware ethernet 00:19:DB:30:01:03;
+    fixed-address 10.10.49.29;
+  }
+  host pw030.cs-ipmi {
+    hardware ethernet 00:19:DB:2F:94:BF;
+    fixed-address 10.10.49.30;
+  }
+  host pw031.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:39;
+    fixed-address 10.10.49.31;
+  }
+  host pw032.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:FD;
+    fixed-address 10.10.49.32;
+  }
+  host pw033.cs-ipmi {
+    hardware ethernet 00:19:DB:30:00:FB;
+    fixed-address 10.10.49.33;
+  }
+  host pw034.cs-ipmi {
+    hardware ethernet 00:16:17:C7:3F:36;
+    fixed-address 10.10.49.34;
+  }
+  host pw035.cs-ipmi {
+    hardware ethernet 00:19:DB:30:00:D9;
+    fixed-address 10.10.49.35;
+  }
+  host pw036.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:68;
+    fixed-address 10.10.49.36;
+  }
+  host pw037.cs-ipmi {
+    hardware ethernet 00:19:DB:55:4F:41;
+    fixed-address 10.10.49.37;
+  }
+  host pw038.cs-ipmi {
+    hardware ethernet 00:19:DB:55:4F:0B;
+    fixed-address 10.10.49.38;
+  }
+  host pw039.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:4F;
+    fixed-address 10.10.49.39;
+  }
+  host pw040.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:C0;
+    fixed-address 10.10.49.40;
+  }
+  host pw041.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:65;
+    fixed-address 10.10.49.41;
+  }
+  host pw042.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:76;
+    fixed-address 10.10.49.42;
+  }
+  host pw043.cs-ipmi {
+    hardware ethernet 00:16:17:C7:D9:7D;
+    fixed-address 10.10.49.43;
+  }
+  host pw044.cs-ipmi {
+    hardware ethernet 00:19:DB:30:01:0C;
+    fixed-address 10.10.49.44;
+  }
+  host pw045.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:A0;
+    fixed-address 10.10.49.45;
+  }
+  host pw046.cs-ipmi {
+    hardware ethernet 00:19:DB:2F:94:D9;
+    fixed-address 10.10.49.46;
+  }
+  host pw047.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:C5;
+    fixed-address 10.10.49.47;
+  }
+  host pw048.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:C3;
+    fixed-address 10.10.49.48;
+  }
+  host pw049.cs-ipmi {
+    hardware ethernet 00:19:DB:2F:94:D1;
+    fixed-address 10.10.49.49;
+  }
+  host pw050.cs-ipmi {
+    hardware ethernet 00:19:DB:2F:94:D7;
+    fixed-address 10.10.49.50;
+  }
+  host pw051.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:4C;
+    fixed-address 10.10.49.51;
+  }
+  host pw052.cs-ipmi {
+    hardware ethernet 00:19:DB:55:4F:AD;
+    fixed-address 10.10.49.52;
+  }
+  host pw053.cs-ipmi {
+    hardware ethernet 00:16:17:C3:55:7A;
+    fixed-address 10.10.49.53;
+  }
+  host pw054.cs-ipmi {
+    hardware ethernet 00:16:17:C3:55:D7;
+    fixed-address 10.10.49.54;
+  }
+  host pw055.cs-ipmi {
+    hardware ethernet 00:19:DB:2F:93:17;
+    fixed-address 10.10.49.55;
+  }
+  host pw056.cs-ipmi {
+    hardware ethernet 00:19:DB:30:00:D2;
+    fixed-address 10.10.49.56;
+  }
+  host pw057.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:4E;
+    fixed-address 10.10.49.57;
+  }
+  host pw058.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:EB;
+    fixed-address 10.10.49.58;
+  }
+  host pw059.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:5D;
+    fixed-address 10.10.49.59;
+  }
+  host pw060.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:9C;
+    fixed-address 10.10.49.60;
+  }
+  host pw061.cs-ipmi {
+    hardware ethernet 00:19:DB:30:00:DC;
+    fixed-address 10.10.49.61;
+  }
+  host pw062.cs-ipmi {
+    hardware ethernet 00:19:DB:2F:94:B1;
+    fixed-address 10.10.49.62;
+  }
+  host pw063.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:B0;
+    fixed-address 10.10.49.63;
+  }
+  host pw064.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:36;
+    fixed-address 10.10.49.64;
+  }
+  host pw065.cs-ipmi {
+    hardware ethernet 00:19:DB:2F:94:CE;
+    fixed-address 10.10.49.65;
+  }
+  host pw066.cs-ipmi {
+    hardware ethernet 00:19:DB:2F:94:9F;
+    fixed-address 10.10.49.66;
+  }
+  host pw067.cs-ipmi {
+    hardware ethernet 00:19:DB:55:4F:8F;
+    fixed-address 10.10.49.67;
+  }
+  host pw068.cs-ipmi {
+    hardware ethernet 00:19:DB:58:07:c4;
+    fixed-address 10.10.49.68;
+  }
+  host pw069.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:CF;
+    fixed-address 10.10.49.69;
+  }
+  host pw070.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:53;
+    fixed-address 10.10.49.70;
+  }
+  host pw071.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:7D;
+    fixed-address 10.10.49.71;
+  }
+  host pw072.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:A6;
+    fixed-address 10.10.49.72;
+  }
+  host pw073.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:62;
+    fixed-address 10.10.49.73;
+  }
+  host pw074.cs-ipmi {
+    hardware ethernet 00:19:DB:30:00:C1;
+    fixed-address 10.10.49.74;
+  }
+  host pw075.cs-ipmi {
+    hardware ethernet 00:16:17:C3:55:C5;
+    fixed-address 10.10.49.75;
+  }
+  host pw076.cs-ipmi {
+    hardware ethernet 00:19:DB:34:24:02;
+    fixed-address 10.10.49.76;
+  }
+  host pw077.cs-ipmi {
+    hardware ethernet 00:16:17:A5:29:32;
+    fixed-address 10.10.49.77;
+  }
+  host pw078.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:85;
+    fixed-address 10.10.49.78;
+  }
+  host pw079.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:A4;
+    fixed-address 10.10.49.79;
+  }
+  host pw080.cs-ipmi {
+    hardware ethernet 00:19:DB:30:00:B6;
+    fixed-address 10.10.49.80;
+  }
+  host pw081.cs-ipmi {
+    hardware ethernet 00:19:DB:30:61:E0;
+    fixed-address 10.10.49.81;
+  }
+  host pw082.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:77;
+    fixed-address 10.10.49.82;
+  }
+  host pw083.cs-ipmi {
+    hardware ethernet 00:19:DB:32:1C:12;
+    fixed-address 10.10.49.83;
+  }
+  host pw084.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:7B;
+    fixed-address 10.10.49.84;
+  }
+  host pw085.cs-ipmi {
+    hardware ethernet 00:19:DB:2F:3E:F0;
+    fixed-address 10.10.49.85;
+  }
+  host pw086.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:61;
+    fixed-address 10.10.49.86;
+  }
+  host pw087.cs-ipmi {
+    hardware ethernet 00:19:DB:2F:94:AF;
+    fixed-address 10.10.49.87;
+  }
+  host pw088.cs-ipmi {
+    hardware ethernet 00:16:17:C3:55:DD;
+    fixed-address 10.10.49.88;
+  }
+  host pw089.cs-ipmi {
+    hardware ethernet 00:16:17:C7:3F:27;
+    fixed-address 10.10.49.89;
+  }
+  host pw090.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:BE;
+    fixed-address 10.10.49.90;
+  }
+  host pw091.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:6B;
+    fixed-address 10.10.49.91;
+  }
+  host pw092.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:D7;
+    fixed-address 10.10.49.92;
+  }
+  host pw093.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:BF;
+    fixed-address 10.10.49.93;
+  }
+  host pw094.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:DD;
+    fixed-address 10.10.49.94;
+  }
+  host pw095.cs-ipmi {
+    hardware ethernet 00:19:DB:58:07:6F;
+    fixed-address 10.10.49.95;
+  }
+  host pw096.cs-ipmi {
+    hardware ethernet 00:19:DB:2F:94:B4;
+    fixed-address 10.10.49.96;
+  }
+  host pw097.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:C7;
+    fixed-address 10.10.49.97;
+  }
+  host pw098.cs-ipmi {
+    hardware ethernet 00:19:DB:58:07:75;
+    fixed-address 10.10.49.98;
+  }
+  host pw099.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:9A;
+    fixed-address 10.10.49.99;
+  }
+  host pw100.cs-ipmi {
+    hardware ethernet 00:19:DB:30:01:17;
+    fixed-address 10.10.49.100;
+  }
+  host pw101.cs-ipmi {
+    hardware ethernet 00:19:DB:55:4F:26;
+    fixed-address 10.10.49.101;
+  }
+  host pw102.cs-ipmi {
+    hardware ethernet 00:16:17:C7:3E:F5;
+    fixed-address 10.10.49.102;
+  }
+  host pw103.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:50;
+    fixed-address 10.10.49.103;
+  }
+  host pw104.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:63;
+    fixed-address 10.10.49.104;
+  }
+  host pw105.cs-ipmi {
+    hardware ethernet 00:16:17:C7:E9:17;
+    fixed-address 10.10.49.105;
+  }
+  host pw106.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:3E;
+    fixed-address 10.10.49.106;
+  }
+  host pw107.cs-ipmi {
+    hardware ethernet 00:19:DB:55:4F:C2;
+    fixed-address 10.10.49.107;
+  }
+  host pw108.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:3A;
+    fixed-address 10.10.49.108;
+  }
+  host pw109.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:E7;
+    fixed-address 10.10.49.109;
+  }
+  host pw110.cs-ipmi {
+    hardware ethernet 00:19:DB:2F:94:BB;
+    fixed-address 10.10.49.110;
+  }
+  host pw111.cs-ipmi {
+    hardware ethernet 00:19:DB:30:00:FF;
+    fixed-address 10.10.49.111;
+  }
+  host pw112.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:9D;
+    fixed-address 10.10.49.112;
+  }
+  host pw113.cs-ipmi {
+    hardware ethernet 00:19:DB:2F:94:9B;
+    fixed-address 10.10.49.113;
+  }
+  host pw114.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:35;
+    fixed-address 10.10.49.114;
+  }
+  host pw115.cs-ipmi {
+    hardware ethernet 00:16:17:C6:C9:81;
+    fixed-address 10.10.49.115;
+  }
+  host pw116.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:AD;
+    fixed-address 10.10.49.116;
+  }
+  host pw117.cs-ipmi {
+    hardware ethernet 00:19:DB:2F:94:94;
+    fixed-address 10.10.49.117;
+  }
+  host pw118.cs-ipmi {
+    hardware ethernet 00:16:17:E3:08:6D;
+    fixed-address 10.10.49.118;
+  }
+  host pw119.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:6E;
+    fixed-address 10.10.49.119;
+  }
+  host pw120.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:B3;
+    fixed-address 10.10.49.120;
+  }
+  host pw121.cs-ipmi {
+    hardware ethernet 00:19:DB:2F:3F:34;
+    fixed-address 10.10.49.121;
+  }
+  host pw122.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:72;
+    fixed-address 10.10.49.122;
+  }
+  host pw123.cs-ipmi {
+    hardware ethernet 00:19:DB:55:4E:D2;
+    fixed-address 10.10.49.123;
+  }
+  host pw124.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:AE;
+    fixed-address 10.10.49.124;
+  }
+  host pw125.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:E6;
+    fixed-address 10.10.49.125;
+  }
+  host pw126.cs-ipmi {
+    hardware ethernet 00:19:DB:30:00:FA;
+    fixed-address 10.10.49.126;
+  }
+  host pw127.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:78;
+    fixed-address 10.10.49.127;
+  }
+  host pw128.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:FA;
+    fixed-address 10.10.49.128;
+  }
+  host pw129.cs-ipmi {
+    hardware ethernet 00:19:DB:30:01:0A;
+    fixed-address 10.10.49.129;
+  }
+  host pw130.cs-ipmi {
+    hardware ethernet 00:19:DB:30:00:EC;
+    fixed-address 10.10.49.130;
+  }
+  host pw131.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:87;
+    fixed-address 10.10.49.131;
+  }
+  host pw132.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:EC;
+    fixed-address 10.10.49.132;
+  }
+  host pw133.cs-ipmi {
+    hardware ethernet 00:19:DB:30:00:DD;
+    fixed-address 10.10.49.133;
+  }
+  host pw134.cs-ipmi {
+    hardware ethernet 00:16:17:E0:AC:9D;
+    fixed-address 10.10.49.134;
+  }
+  host pw135.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:37;
+    fixed-address 10.10.49.135;
+  }
+  host pw136.cs-ipmi {
+    hardware ethernet 00:19:DB:30:00:E9;
+    fixed-address 10.10.49.136;
+  }
+  host pw137.cs-ipmi {
+    hardware ethernet 00:19:DB:30:01:0F;
+    fixed-address 10.10.49.137;
+  }
+  host pw138.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:55;
+    fixed-address 10.10.49.138;
+  }
+  host pw139.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:73;
+    fixed-address 10.10.49.139;
+  }
+  host pw140.cs-ipmi {
+    hardware ethernet 00:19:DB:55:4F:59;
+    fixed-address 10.10.49.140;
+  }
+  host pw141.cs-ipmi {
+    hardware ethernet 00:19:DB:2F:94:98;
+    fixed-address 10.10.49.141;
+  }
+  host pw142.cs-ipmi {
+    hardware ethernet 00:19:DB:30:01:06;
+    fixed-address 10.10.49.142;
+  }
+  host pw143.cs-ipmi {
+    hardware ethernet 00:16:17:E2:CD:E9;
+    fixed-address 10.10.49.143;
+  }
+  host pw144.cs-ipmi {
+    hardware ethernet 00:19:DB:58:07:54;
+    fixed-address 10.10.49.144;
+  }
+  host pw145.cs-ipmi {
+    hardware ethernet 00:19:DB:30:00:D8;
+    fixed-address 10.10.49.145;
+  }
+  host pw146.cs-ipmi {
+    hardware ethernet 00:16:17:C7:D9:9E;
+    fixed-address 10.10.49.146;
+  }
+  host pw147.cs-ipmi {
+    hardware ethernet 00:19:DB:58:07:61;
+    fixed-address 10.10.49.147;
+  }
+  host pw148.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:E2;
+    fixed-address 10.10.49.148;
+  }
+  host pw149.cs-ipmi {
+    hardware ethernet 00:19:DB:55:4F:4A;
+    fixed-address 10.10.49.149;
+  }
+  host pw150.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:7F;
+    fixed-address 10.10.49.150;
+  }
+  host pw151.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:F8;
+    fixed-address 10.10.49.151;
+  }
+  host pw152.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:FF;
+    fixed-address 10.10.49.152;
+  }
+  host pw153.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:54;
+    fixed-address 10.10.49.153;
+  }
+  host pw154.cs-ipmi {
+    hardware ethernet 00:19:DB:2F:94:BA;
+    fixed-address 10.10.49.154;
+  }
+  host pw155.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:C4;
+    fixed-address 10.10.49.155;
+  }
+  host pw156.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:C6;
+    fixed-address 10.10.49.156;
+  }
+  host pw157.cs-ipmi {
+    hardware ethernet 00:19:DB:30:00:E5;
+    fixed-address 10.10.49.157;
+  }
+  host pw158.cs-ipmi {
+    hardware ethernet 00:19:DB:30:00:F2;
+    fixed-address 10.10.49.158;
+  }
+  host pw159.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:F3;
+    fixed-address 10.10.49.159;
+  }
+  host pw160.cs-ipmi {
+    hardware ethernet 00:19:DB:55:4F:05;
+    fixed-address 10.10.49.160;
+  }
+  host pw161.cs-ipmi {
+    hardware ethernet 00:19:DB:2F:3F:35;
+    fixed-address 10.10.49.161;
+  }
+  host pw162.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:AC;
+    fixed-address 10.10.49.162;
+  }
+  host pw163.cs-ipmi {
+    hardware ethernet 00:19:DB:2F:94:B7;
+    fixed-address 10.10.49.163;
+  }
+  host pw164.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:49;
+    fixed-address 10.10.49.164;
+  }
+  host pw165.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:3B;
+    fixed-address 10.10.49.165;
+  }
+  host pw166.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:5B;
+    fixed-address 10.10.49.166;
+  }
+  host pw167.cs-ipmi {
+    hardware ethernet 00:19:DB:55:4F:65;
+    fixed-address 10.10.49.167;
+  }
+  host pw168.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:74;
+    fixed-address 10.10.49.168;
+  }
+  host pw169.cs-ipmi {
+    hardware ethernet 00:19:DB:30:00:CF;
+    fixed-address 10.10.49.169;
+  }
+  host pw170.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:5F;
+    fixed-address 10.10.49.170;
+  }
+  host pw171.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:33;
+    fixed-address 10.10.49.171;
+  }
+  host pw172.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:C1;
+    fixed-address 10.10.49.172;
+  }
+  host pw173.cs-ipmi {
+    hardware ethernet 00:19:DB:30:00:B9;
+    fixed-address 10.10.49.173;
+  }
+  host pw174.cs-ipmi {
+    hardware ethernet 00:19:DB:2F:94:9D;
+    fixed-address 10.10.49.174;
+  }
+  host pw175.cs-ipmi {
+    hardware ethernet 00:19:DB:2F:94:A8;
+    fixed-address 10.10.49.175;
+  }
+  host pw176.cs-ipmi {
+    hardware ethernet 00:19:DB:2F:94:DA;
+    fixed-address 10.10.49.176;
+  }
+  host pw177.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:AF;
+    fixed-address 10.10.49.177;
+  }
+  host pw178.cs-ipmi {
+    hardware ethernet 00:19:DB:34:24:00;
+    fixed-address 10.10.49.178;
+  }
+  host pw179.cs-ipmi {
+    hardware ethernet 00:19:DB:34:23:CA;
+    fixed-address 10.10.49.179;
+  }
+  host pw180.cs-ipmi {
+    hardware ethernet 00:16:17:C3:55:E1;
+    fixed-address 10.10.49.180;
+  }
+} 

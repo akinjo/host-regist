@@ -1,0 +1,6 @@
+
+ Copyright (c) 2007 Atsushi KINJO
+ All rights reserved.
+
+ Author : Atsushi KINJO <akinjo@neo.ie.u-ryukyu.ac.jp
+

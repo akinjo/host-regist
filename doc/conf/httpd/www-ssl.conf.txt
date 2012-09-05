@@ -1,0 +1,37 @@
+<VirtualHost *:443>
+
+ServerAdmin  webmaster@ie.u-ryukyu.ac.jp
+DocumentRoot /www
+
+ErrorLog     logs/ssl_error_log
+CustomLog    logs/ssl_access_log common
+LogLevel warn
+
+SSLEngine on
+SSLCipherSuite ALL:!ADH:!EXPORT56:RC4+RSA:+HIGH:+MEDIUM:+LOW:+SSLv2:+EXP
+SSLCertificateFile /etc/httpd/certs/server.crt
+SSLCertificateKeyFile /etc/httpd/certs/server.key
+SSLCACertificateFile /etc/httpd/certs/cacert.pem
+
+#SSLCertificateFile /etc/pki/tls/certs/server.pem
+#SSLCertificateKeyFile /etc/pki/tls/certs/server.key
+
+<Location /internal>
+  order deny,allow
+  deny from all
+#  allow from 133.13.48.0/24
+#  allow from 2001:2f8:1c:d048::/64
+
+  Satisfy any
+  
+  AuthName "Please enter UserName and Password"
+  AuthType Basic
+  AuthBasicProvider ldap  
+
+  AuthLDAPURL ldap://ldap.ie.u-ryukyu.ac.jp/ou=ie,o=u-ryukyu,c=jp
+  Require ldap-attribute objectClass=person 
+
+
+</Location>
+
+</VirtualHost>

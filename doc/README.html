@@ -1,0 +1,539 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd"> 
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja">
+
+<head>
+<meta http-equiv="Set-Cookie"   content="dummy" />
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+<meta http-equiv="Content-Style-Type" content="text/css" />
+<link rel="stylesheet" href="./style.css" type="text/css" />
+<link rev="made" href="mailto:akinjo@neo.ie.u-ryukyu.ac.jp" />
+<link rel="index" href="./index.php" />
+<title>IPアドレス管理・DNS・DHCP 連携システム マニュアル</title>
+</head>
+<h1>IPアドレス管理・DNS・DHCP 連携システム マニュアル</h1>
+<hr />
+<address>
+Write by Atsushi KINJO &lt; akinjo at neo.ie.u-ryukyu.ac.jp&gt; <br />
+v2.0.1b 2007/6/27(Wed) <br />
+v2.0b 2007/6/3(San)
+</address>
+<hr />
+<p>
+これは、プログラム同梱のマニュアルです。
+以下のURLも参考にどうぞ。<br />
+<a href="http://www.neo.ie.u-ryukyu.ac.jp/~akinjo/pw/index.php?Software%2FHostRegist">
+http://www.neo.ie.u-ryukyu.ac.jp/~akinjo/pw/?Software/HostRegist</a>
+</p>
+<hr />
+<h2>1.はじめに(本プログラムについて)</h2>
+<p>
+DNS管理、IPアドレス管理、端末利用者の管理、DHCPサーバによるIPアドレス割り当てを、
+同一システムで行います。
+図に示すように、httpd,PostgreSQL,BIND,DHCPDなど、
+さまざなサービスが連携するシステムになってます。 <br />
+※現在は琉球大学 工学部 情報工学科に特化したシステムになっています。
+</p>
+
+<img src="./img/system.png" width="500" heigth="417"/>
+
+<h2>2.インストール</h2>
+<h3>2.1. パッケージのインストール</h3>
+<p>
+本システムは，httpd,php,bind,dhcp,posgresql,ldap 関連のパッケージをインストールする必要がある.
+</p>
+<h4>Fedora Core {5,6},Fedora 7  の場合</h4>
+<p>
+yum を利用してパッケージのインストールを行います。
+</p>
+<pre>
+# yum install httpd httpd-devel httpd-manual
+# yum install php php-pear php-pgsql php-ldap php-mbstring php-pdo
+# yum install bind bind-sdb bind-chroot bind-libs bind-utils caching-nameserver
+# yum install dhcp dhcp-devel
+# yum install postgresql postgresql-server postgresql-libs postgresql-devel 
+# yum install phppgadmin
+# yum install phpAdminIII
+</pre>
+<h3>2.2. モジュールのコンパイル</h3>
+<p>
+DHCPと連携を行うためのプログラムのコンパイルを行う。
+</p>
+<pre>
+# cd $SCRIPT_DIR/dhcp_cmd
+# make 
+</pre>
+
+<h2>3. FILES</h2>
+<p>
+プログラムを構成するファイル．
+</p>
+<ul>
+ <li><span class="src">admin.php</span>管理者管理ページ</li>
+ <li><span class="src">convert.php</span> v0.1b -> v0.2b へのデータの変換プログラム</li>
+ <li><span class="src">dhcp.inc</span> DHCP との連携モジュール</li>
+ <li><span class="src">error.inc</span> エラー処理など</li>
+ <li><span class="src">func.inc</span> 共通で使用する関数群</li>
+ <li><span class="src">index.php</span> トップページ</li>
+ <li><span class="src">ini.inc</span> 設定ファイル(DHCPサーバー,PosgreSQL サーバーなどを記述)</li>
+ <li><span class="src">ldap.inc</span> LDAP との連携関数郡</li>
+ <li><span class="src">mail.inc</span> メール関連</li>
+ <li><span class="src">named.inc</span> DBアクセスモジュール(SQL 文はすべてここで記述)</li>
+ <li><span class="src">print.inc</span> 表示に使用する関数</li>
+ <li><span class="src">style.css</span> スタイルシート</li>
+ <li><span class="dir">image</span> 画像を保存するディレクトリ</li>
+ <li><span class="dir">dhcp_cmd</span> DHCP連携コマンドソースィレクトリ
+  <ul>
+   <li><span class="src">Makefile</span></li>
+   <li><span class="src">dhcprequest.c</span> DHCP連携コマンドソース</li>
+  </ul>
+ </li>
+ <li><span class="dir">dhcp_scripts</span> DHCP関連スクリプト
+  <ul>
+   <dt><span class="src">create_dhcpd_conf.php</span> dhcpd.leasesを作成(初期構築、障害時に使用)</li>
+  </ul>
+ </li>
+ <li><span class="dir">doc</span> ドキュメント
+  <ul>
+   <li><span class="src">COPYRIGHT.txt</span> 著作権情報</li>
+   <li><span class="src">README.html</span> 本ファイル、プログラムの説明など</li>
+  </ul>
+ </li>
+ <li><span class="dir">sql</span> DB構築に使用するSQL 文を保存するディレクトリ</li>
+ <li><span class="dir">conf</span> php,httpd,dhcpd,namedの設定ファイル</li>
+</ul>
+
+<h2>4. サービスの設定</h2>
+<h3>4.1. 設定ファイル一覧</h3>
+<p>
+以下から設定ファイルが参照できる。
+詳しい設定はそちらを参照すること。
+</p>
+<ul>
+ <li><a href="./conf/httpd/www-ssl.conf.txt">./conf/httpd/www-ssl.conf</a></li>
+ <li><a href="./conf/php/php.ini.txt">./conf/php/php.ini</a></li>
+ <li><a href="./conf/phpPgAdmin/config.inc.php.txt">./conf/phpPgAdmin/config.inc.php</a></li>
+ <li><a href="./conf/named/named.conf.txt">./conf/named/named.conf</a></li>
+ <li><a href="./conf/dhcpd/dhcpd.conf.txt">./conf/dhcpd/dhcpd.conf</a></li>
+ <li><a href="./conf/pgsql/pg_hba.conf.txt">./conf/pgsql/pg_hba.conf</a></li>
+</ul>
+
+<h3>4.2. httpd(apache)の設定</h3>
+<p>
+本システムでは利用者を特定するため httpd の認証を利用する。
+ここでは，LDAP を用いたBasicの設定について記述する。
+<p>
+<h4><span class="src">/etc/httpd/conf.d/www-ssl.conf</span>の設定例</h4>
+<pre>
+&lt;Location /internal/host-regist&gt;
+  order deny,allow
+  deny from all
+  Satisfy any
+ 
+  AuthName "Please enter UserName and Password"
+  AuthType Basic
+  AuthBasicProvider ldap  
+  
+  AuthLDAPURL ldap://ldap.ie.u-ryukyu.ac.jp/ou=ie,o=u-ryukyu,c=jp
+  Require ldap-attribute objectClass=person 
+&lt;/Location&gt;
+</pre>
+
+<h3>4.3. PHP の設定</h3>
+<p>
+レコード数が多いと，メモリーの問題で表示できないことがある．
+メモリリミットを増やすことを推奨する。
+</p>
+<h4><span class="src">/etc/php.ini</span>設定例</h4>
+<pre>
+memory_limit = 20M
+</pre>
+
+<h3>4.4. Named(BIND)の設定</h3>
+<p>
+DNSサーバーは，Table(View) をzone情報として参照する。
+</p>
+<p>
+複数ドメインを管理する必要があるため，ドメインごとにView を作成して参照させる。
+(View についてはデータベースの構造を参照)
+</p>
+<h4><span class="src">named</span>書式</h4>
+<pre>
+zone "ie.u-ryukyu.ac.jp" {
+        type master;
+        database "pgsql データベース名 table(view)名 ホスト名 ユーザ名 パスワード";
+};
+</pre>
+
+<h4><span class="src">named.conf</span>設定例</h4>
+<pre>
+zone "ie.u-ryukyu.ac.jp" {
+        type master;
+        database "pgsql named ie 133.13.48.3 postgres password";
+};
+zone "st.ie.u-ryukyu.ac.jp" {
+        type master;
+        database "pgsql named st 133.13.48.3 postgres password";
+};
+</pre>
+<p>
+また、IPv6 の設定を行う場合は，以下の設定を忘れずに行う必要がある。
+</p>
+<pre>
+listen-on-v6 { any ; };
+query-source-v6 address 2001:2f8:1c:d048::850d:3003;
+transfer-source-v6 2001:2f8:1c:d048::850d:3003;
+notify-source-v6 2001:2f8:1c:d048::850d:3003;
+</pre>
+
+<h4>4.5. DHCP の設定</h4>
+<p>
+通常の設定に加えて omapi を使用する設定を行う。
+以下の一行を<span class="src">/etc/dhcpd.conf</span>に設定を追加する。
+</p>
+<pre>
+omapi-port  10004;
+</pre>
+<p>
+実際登録したホストのデータは<span class="src">/var/lib/dhcpd/dhcpd.leases</span>に記述される。
+</p>
+<p>
+複数ネットワークののDHCPサーバーの設定が必要な場合は、
+それぞれのネットワークの役割を応じて設定する必要がある．
+</p>
+<ul>
+ <li><span class="src">/etc/dhcpd.conf</span>動的な変更が必要のないネットワーク</li>
+ <li><span class="src">/var/lib/dhcpd/dhcpd.leases</span>動的な変更が必要なネットワーク</li>
+</ul>
+<h4>情報工学科の例</h4>
+<ul>
+ <li>
+  <span class="dir">133.13.48.0/24</span>（サーバー群） <br/>
+  <span class="src">dhcpd.conf</span> DHCPサーバーが存在するネットワークの設定
+ </li>
+ <li>
+  <span class="dir">133.13.49.0/24</span>（クラスタ・固定端末）<br />
+  <span class="src">dhcpd.conf</span>IP・MAC対応・基本設定
+ </li>
+ <li>
+  <span class="dir">133.13.56.0/21</span>（フラット、一般利用者用）<br />
+  <span class="src">dhcpdconf</span>DNSサーバーなどの基本情報<br />
+  <span class="src">dhcpd.lease</span>MACアドレスとIPアドレスの対応
+ </li>
+ <li>
+  <span class="dir">10.0.0.0/20</span>(プライベート・無線LAN)<br />
+  <span class="src">dhcpd.conf</span>range などの設定<br />
+  <span class="src">dhcpd.lease</span>リリース情報が書き込まれる
+ </li>
+ <li>
+  <span class="dir">10.0.15.0/20</span>(プライベート・フリースポット)<br />
+  <span class="src">dhcpd.conf</span>range などの設定<br />
+  <span class="src">dhcpd.lease</span>リリース情報が書き込まれる
+ </li>
+</ul>
+
+<h3>4.6. PostgreSQL の設定</h3>
+<h4>4.6.1. 初期設定</h4>
+<pre>
+#/etc/init.d/postgresql initdb  # PostgreSQL の初期化
+# createuser named              # ユーザの追加
+# createdb   named              # DBの作成
+</pre>
+
+<h4>4.6.2. ネットワーク権限の設定</h4>
+<p>
+<span class="src">/var/lib/pgsql/data/pg_hba.conf</span>でアクセスを許可するネットワークを設定する。
+</p>
+<h4>設定例</h4>
+<pre>
+local   all     all                             ident sameuser
+host    all     all     127.0.0.1/32            md5
+host    all     all     ::1/128                 md5
+host    all     all     133.13.48.0/20          md5
+host    all     all     2001:2f8:1c:d048::/54   md5
+</pre>
+
+<h4>4.6.3. Table,View の作成</h4>
+<p>
+psql で PostgreSQL にアクセスし、Table,View 作成用のSQLを読み込む。
+</p>
+<pre>
+# psql -U user_name -W
+# \i $SCRIPT_DIR/create_table.sql  # table の作成
+# \i $SCRIPT_DIR/create_view.sql   # view の作成
+</pre>
+
+
+<h4>4.6.4. 初期データの投入</h4>
+<p>
+各ドメインごとのSOA,NSを追加する．
+</p>
+
+<h5>追加に使用するSQL例</h5>
+<pre>
+insert into tbl_data (name,rdtype,rdata,domain)
+       values ('ie.u-ryukyu.ac.jp','SOA','kanai.ie.u-ryukyu.ac.jp. hostmaster.ie.u-ryukyu.ac.jp. 2007051800 28800 7200 604800 86400','ie');
+insert into tbl_data (name,rdtype,rdata,domain)   values ('ie.u-ryukyu.ac.jp','NS','kanai.ie.u-ryukyu.ac.jp.','ie');
+insert into tbl_data (name,rdtype,rdata,domain)   values ('ie.u-ryukyu.ac.jp','NS','nirai.ie.u-ryukyu.ac.jp.','ie');
+</pre>
+
+<h3>4.7. phpPgAdminの設定</h3>
+<p>
+PostgreSQL DBを操作は、 Webインターフェースである phpPgAdminを用いて行う．
+</p>
+
+<h4>設定例</h4>
+<p>
+サーバーの指定を行う。
+複数のサーバーを指定する場合は<span class="src">$conf['server'][0],[1],...</span> と追加していく。
+</p>
+<pre>
+$conf['servers'][0]['desc'] = 'kanai';
+$conf['servers'][0]['host'] = '133.13.48.3';
+$conf['servers'][0]['port'] = 5432;
+$conf['servers'][0]['sslmode'] = 'allow';
+$conf['servers'][0]['defaultdb'] = 'template1';
+$conf['servers'][0]['pg_dump_path'] = '/usr/bin/pg_dump';
+$conf['servers'][0]['pg_dumpall_path'] = '/usr/bin/pg_dumpall';
+$conf['servers'][0]['slony_support'] = false;
+$conf['servers'][0]['slony_sql'] = '/usr/share/pgsql';
+</pre>
+
+<h2>5. データベース構造について</h2>
+<h3>5.1. Table の種類</h3>
+<ul>
+ <li><span class="src">tbl_data</span>メイン情報</li>
+ <li><span class="src">tbl_ipaddr</span>IPアドレス管理テーブル</li>
+ <li><span class="src">tbl_domain</span>研究室・ドメイン情報</li>
+ <li><span class="src">tbl_admin_user</span>管理者管理テーブル</li>
+</ul>
+
+<h3>5.2 View の種類</h3>
+<p>
+tbl_data の 'domain' をもとにドメインごと作成する。
+このViewがDNSが参照するzone 情報となる.
+</p>
+<h4>情報工学科の例</h4>
+<ul>
+ <li><span class="src">ie, cs, jm</span>正引き(基幹システム、クラスタ,事務)</li>
+ <li><span class="src">cr, dsp, engr, eva, fts, iip, lsi, nal, pc, st, sys, tea</span>正引き(フラット)</li>
+ <li><span class="src">ads, ms, nc, neo, sys</span>正引き（個別・予備）</li>
+ <li><span class="src">rev_48, ... ,rev_63</span>逆引き(IPv4)</li>
+ <li><span class="src"> rev6_48, ... , rev6_50</span>逆引き(IPv6) </li>
+</ul>
+<h4>view 作成用SQL文</h4>
+<pre>
+create view View名 as 
+   SELECT name,ttl,rdtype,regexp_replace(rdata,'[.]0{0,2}','.','g') as rdata  
+   from tbl_data where domain = 'ドメイン名' and use = 't' and dtime is null; 
+</pre>
+
+<h4>例：IE ドメインの作成</h4>
+<pre>
+create view ie as 
+   SELECT name,ttl,rdtype,regexp_replace(rdata,'[.]0{0,2}','.','g') as rdata  
+     from tbl_data where domain = 'ie' and use = 't' and dtime is null; 
+</pre>
+
+<h3>5.3. テーブルの構造</h3>
+<p>
+テーブル作成に利用したSQL文をしめす。
+</p>
+<pre>
+CREATE TABLE tbl_data ( 
+  ID               SERIAL primary key,               /* プライマリキー*/
+  NAME             TEXT,                             /* ホスト名など */
+  TTL              INTEGER not null default '86500', /* Time to live */  
+  RDTYPE           TEXT,                             /* A,CNAME,PTR,AAA,NS,SOA,MX */
+  RDATA            TEXT,                             /* IPアドレスなどのレコードの情報 IPアドレスは 133.013.048.002で保存 */
+  USER_NAME        TEXT,                             /* 使用者名       */
+  SID              TEXT,                             /* アカウント名   */
+  MAIL             TEXT,                             /* メールアドレス */ 
+  DOMAIN           varchar(10),                      /* ドメイン,ビュー作成用 */
+  MACADDR_WIRED    varchar(17),                      /* MACアドレス(有線) */
+  MACADDR_WIRELESS varchar(17),                      /* MACアドレス(無線) */
+  DESCRIPTION      TEXT,                             /* 説明 */
+  IPV6             BOOL not null default 'f',        /* IPv6 の有無 */
+  MX               BOOL not null default 'f',        /* MX の有無 */
+  atime            TIMESTAMP not null default now(), /* アクセス時間 */
+  ctime            TIMESTAMP not null default now(), /* 作成時間     */
+  mtime            TIMESTAMP not null default now(), /* 修正時間     */
+  dtime            TIMESTAMP,                        /* 削除時間     */
+  USE              BOOL not null default 't',        /* ビューに参照させるためのフラグ */
+  ALERT            BOOL not null default 'f',        /* 警告 */
+  EDIT             BOOL not null default 't',        /* 編集可能フラグ */
+  DELETE           BOOL not null default 't'         /* 削除可能フラグ
+);
+</pre>
+<pre>
+CREATE TABLE TBL_IPADDR ( 
+  ID               serial primary key,               /* プライマリキー */
+  IPADDR           varchar(15) not null,             /* IPアドレス ソートのため 133.013.048.002 の形式で保存 */
+  DOMAIN           varchar(10) ,                     /* 貸し出しているドメイン */
+  LEASE            bool not null default 'f',        /* 一度でも貸出フラグ */
+  USED             bool not null default 'f'         /* 現在貸出中（使用中）のフラグ */
+);
+</pre>
+<pre>
+CREATE TABLE TBL_ADMIN_USER ( 
+  ID               SERIAL primary key,               /* プライマリーキー */
+  USER_NAME        TEXT not null,                    /* 管理者名         */
+  SID              TEXT not null,                    /* 管理者アカウント */
+  MAIL             TEXT not null,                    /* 管理者メールアドレス */
+  DOMAIN           varchar(10) not null,             /* ドメイン */
+  edit             bool not null default false,      /* 編集削除可能かどうか */
+  TS               TIMESTAMP not null default now()  /* 登録時刻 */
+);
+</pre>
+
+<pre>
+CREATE TABLE TBL_DOMAIN (
+  ID               SERIAL primary key,               /* プライマリーキー  */
+  DOMAIN           varchar(10) not null,             /* ドメイン          */
+  NAME             TEXT not null,                    /* 研究室名          */
+  DESCRIPTION      TEXT,                             /* 説明              */
+  DISPLAY          BOOL not null default 't',        /* 表示するか        */
+  "select"         BOOL not null default 't'         /* Webから選択可能か */
+);
+</pre>
+
+<h3>5.4. DBの操作（ゾーン情報の操作）SQL 文</h3>
+<p>
+通常はWebインターフェースから動作する。
+詳しいSQL 文はnamed.inc を参照すると良い。
+</p>
+
+<h4>5.4.1. A レコード</h4>
+<ul>
+ <li>IPv4正引き(メイン),IPv4逆引き,IPv6正引き,IPv6逆引きの5つのレコードに対して操作を行う。</li>
+ <li>IPv4正引きがメインの情報であるユーザ情報、IPv6・MXの有無の情報を保持している。</li>
+ <li>その他のレコードはDNSが参照する基本情報とDNSに参照させる判断を行うフラグを保持するのみ。</li>
+</ul>
+
+<dl>
+ <dt>追加(insert)</dt>
+ <dd>
+  上記の5つのレコードの追加を行う。
+  IPアドレス管理テーブルから配布していないIPアドレスを受け取る。
+  IPv6正引き,IPv6逆引きは IPv6が有効のときのみ,MX レコードは MXレコードが有効のときのみフラグを立てて DNS から参照可能にする。
+ </dd>
+ <dt>更新(update)</dt>
+ <dd>
+  追加と同様のポリシーのもと、更新があった内容を5つのレコードに反映させる。
+ </dd>
+ <dt>削除(delete)</dt>
+ <dd>5つのレコードに対して削除時間を設定する。実際のレコードの削除は行わない。</dd>
+</dl>
+
+<h4>5.4.2. CNAMEレコード</h4>
+<p>
+CNAME レコードのみなため、レコード１つの操作だけでよい。
+</p>
+<dl>
+ <dt>追加(insert)</dt>
+ <dd>※管理者権限があるユーザのみ操作可能なためユーザ情報は付加していない.。</dd>
+ <dt>更新(update)</dt>
+ <dd>更新内容をレコードに反映させる。</dd>
+ <dt>削除(ddelete)</dd>
+ <dd>レコードに対して削除時間を設定する。実際のレコードの削除は行っていない。</dd>
+</dl>
+
+<h4>5.4.3. MX レコード</h4>
+<p>
+各ドメインに対するMXレコードのみを許可している。
+</p>
+<dl>
+ <dt>追加・削除(insert,delete)</dt>
+ <dd>ドメインを追加・削除する機会はほとんどないと考えられるため許可をしていない。</dd>
+ <dt>更新(update)</dt>
+ <dd>メールサーバーの変更を行う。プレファレンス値の変更は行えない</dd>
+</dl>
+<h4>5.4.4 SOA レコード</h4>
+<dl>
+ <dt> 更新(update)</dt>
+ <d>serial の更新を行う。</dd>
+</dl>
+
+<h2>6. 保守・運用</h2>
+<p>
+※パスワード入力の手間を省略するために $HOME/.pgpass を作成すると良い．
+</p>
+<pre>
+133.13.48.3:5432:named:user_name:password
+</pre>
+
+<h3>6.1. データベースのバックアップ</h3>
+<p>
+PostgreSQL で用意されているpgdumpを利用する。
+</p>
+<pre>
+# pg_dump データベース名 > バックアップファイル名 
+</pre>
+
+<h3>6.2. データベースのリストア</h3>
+<p>
+psqlを使用して、データのリストアを行う。
+</p>
+<pre>
+# createdb データベース名
+# psql -e データベース名 < バックアップファイル名  
+</pre>
+
+<h3>6.3. dhcp.leases の復元</h3>
+<p>
+DBからデータを引っ張りだすスクリプトが用意されている。
+</p>
+<pre>
+# ./$SCRIPT_DIR/dhcp_scripts/create_dhcp_conf.php > dhcpd.leases 
+</pre>
+
+
+<h3>6.4. ドメインの追加</h3>
+<ol>
+ <li>tbl_domain にドメイン情報を追加($SCRIPT_DIR/sql/insert_domain.sqlを参照</li>
+ <li>4.5.4 を参考にSOA,NSレコードを追加</li>
+ <li>5.2を参考にview を作成</li>
+ <li>4.3を参考にnamed.conf を設定</li>
+</ol>
+
+<h3>6.5. 不正申請・長期間アクセスのない登録への対応</h3>
+<h4>不正申請例(情報工学科の場合)</h4>
+<ul>
+ <li>ハンドルネームでの登録<li>
+ <li>フリーメールでの登録</li>
+ <li>無線LANアクセスポイントからの申請</li>
+ <li>フラットセグメント以外からの申請</li>
+</ul>
+
+<h2>7. 著作権など</h2>
+<h3>7.1. 著作権</h3>
+<p>
+本プログラムの著作権は製作者である金城 篤史が保持しています。
+</p>
+
+<h3>7.2. 免責</h3>
+<p>
+本プログラムを使用することによって被った不利益もしくは損失について、
+作者は使用者に対して一切の責任を負わないものとします。
+</p>
+
+<h3>7.3. 転載について</h3>
+<p>
+本プログラムおよびドキュメントは製作者の許可なく転載を禁止します。
+</p>
+
+<h3>7.4. ソースコードについて</h3>
+<p>
+プログラムのソースコードのWeb公開は行っていません。
+プログラムのソースコードが必要な場合は製作者まで問い合わせてください。
+※興味を持ってくれる人が増えた場合に,Webページで公開するかは検討します。
+</p>
+
+<h2>8. 今後の課題？</h2>
+<ul>
+ <li><a href="http://cacti.net/">cacti</a>のように管理機能を充実</li>
+ <li>複数MACアドレスへの対応(かなり特殊なケースなのであまり必要性は感じませんが...)</li>
+ <li>DHCP連携モジュールの改良</li>
+</ul>
+
+</body>
+</html>

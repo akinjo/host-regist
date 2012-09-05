@@ -1,0 +1,20 @@
+insert into tbl_admin_user (sid,user_name,mail,domain,edit) values('akinjo','金城　篤史','akinjo@neo.ie.u-ryukyu.ac.jp','st','t');
+insert into tbl_admin_user (sid,user_name,mail,domain,edit) values('akinjo','金城　篤史','akinjo@neo.ie.u-ryukyu.ac.jp','pc','t');
+insert into tbl_admin_user (sid,user_name,mail,domain,edit) values('akinjo','金城　篤史','akinjo@neo.ie.u-ryukyu.ac.jp','iip','t');
+insert into tbl_admin_user (sid,user_name,mail,domain,edit) values('akinjo','金城　篤史','akinjo@neo.ie.u-ryukyu.ac.jp','dsp','t');
+insert into tbl_admin_user (sid,user_name,mail,domain,edit) values('akinjo','金城　篤史','akinjo@neo.ie.u-ryukyu.ac.jp','eva','t');
+insert into tbl_admin_user (sid,user_name,mail,domain,edit) values('akinjo','金城　篤史','akinjo@neo.ie.u-ryukyu.ac.jp','nal','t');
+insert into tbl_admin_user (sid,user_name,mail,domain,edit) values('akinjo','金城　篤史','akinjo@neo.ie.u-ryukyu.ac.jp','tea','t');
+insert into tbl_admin_user (sid,user_name,mail,domain,edit) values('akinjo','金城　篤史','akinjo@neo.ie.u-ryukyu.ac.jp','lsi','t');
+insert into tbl_admin_user (sid,user_name,mail,domain,edit) values('akinjo','金城　篤史','akinjo@neo.ie.u-ryukyu.ac.jp','engr','t');
+insert into tbl_admin_user (sid,user_name,mail,domain,edit) values('akinjo','金城　篤史','akinjo@neo.ie.u-ryukyu.ac.jp','fts','t');
+insert into tbl_admin_user (sid,user_name,mail,domain,edit) values('akinjo','金城　篤史','akinjo@neo.ie.u-ryukyu.ac.jp','cr','t');
+insert into tbl_admin_user (sid,user_name,mail,domain,edit) values('akinjo','金城　篤史','akinjo@neo.ie.u-ryukyu.ac.jp','ie','t');
+insert into tbl_admin_user (sid,user_name,mail,domain,edit) values('akinjo','金城　篤史','akinjo@neo.ie.u-ryukyu.ac.jp','cs','t');
+insert into tbl_admin_user (sid,user_name,mail,domain,edit) values('akinjo','金城　篤史','akinjo@neo.ie.u-ryukyu.ac.jp','neo','t');
+insert into tbl_admin_user (sid,user_name,mail,domain,edit) values('akinjo','金城　篤史','akinjo@neo.ie.u-ryukyu.ac.jp','ads','t');
+insert into tbl_admin_user (sid,user_name,mail,domain,edit) values('akinjo','金城　篤史','akinjo@neo.ie.u-ryukyu.ac.jp','ms','t');
+insert into tbl_admin_user (sid,user_name,mail,domain,edit) values('akinjo','金城　篤史','akinjo@neo.ie.u-ryukyu.ac.jp','sys','t');
+insert into tbl_admin_user (sid,user_name,mail,domain,edit) values('akinjo','金城　篤史','akinjo@neo.ie.u-ryukyu.ac.jp','nc','t');
+insert into tbl_admin_user (sid,user_name,mail,domain,edit) values('akinjo','金城　篤史','akinjo@neo.ie.u-ryukyu.ac.jp','jm','t');
+

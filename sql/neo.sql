@@ -1,0 +1,2 @@
+insert into tbl_data (name,rdtype,rdata,user_name,sid,mail,domain,macaddr_wired,macaddr_wireless,description,use,ipv6,atime,ctime,mtime,dtime) values ('nhk.neo.ie.u-ryukyu.ac.jp','A','133.013.051.002','','','','ie','','','','t','t','2007-03-12 11:07:28.056389','2007-03-12 11:07:28.056389','2007-03-12 11:07:28.056389',null);
+insert into tbl_data (name,rdtype,rdata,domain,use,edit,dtime) values ('nhk.neo.ie.u-ryukyu.ac.jp','AAAA','2001:2f8:1c:d04d::2','ie','t','f',null);

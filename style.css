@@ -1,0 +1,153 @@
+body {
+  background-color   : #f4f4f4;
+}
+
+h2 {
+  padding-left: 1em;
+}
+
+h3{
+  margin: 2px;
+  font-size: 100%;
+  color : #b22222;
+}
+table {
+  padding-right: 1em;
+}
+
+table#list {
+  font-size: 75%;
+  margin  : 1em 0em 0em 0em;
+  padding : 0em 0em 0em 0em;
+}
+
+table#edit {
+  font-size: 80%;
+  margin  : 1em 0em 0em 1em;
+  padding : 1em 0em 0em 1em;
+
+  
+}
+
+td,th{ 
+  vartical-align: middle;
+  padding: 4px 2px;
+  border-bottom: 1px dashed black;
+  white-space: nowrap;
+}
+
+menu {
+  width:10em;
+  margin: 0px;
+  padding: 0px;
+  vertical-align: top;
+}
+
+#body {
+  margin: 0px;
+  padding: 0px;
+  vertical-align: top;
+}
+
+p {
+  padding : 0.1em 0em 0em 0.1em;
+  margin  : 0.1em 0em 0em 0.1em;
+}
+
+th{
+  background-color   : #c0c0f0;
+}
+
+tr#alert {
+  background-color   : #f4c0c0;
+}
+
+div#edit {
+  margin  : 1em 0em 0em 1em;
+  padding : 1em 0em 0em 1em;
+}
+
+
+ul{
+  margin  : 0em 0em 0em 2em;
+  padding : 0em 0em 0em 0em;
+}
+
+li {
+  font-size : 80%;
+}
+form {
+  margin: 0px;
+  padding: 0px;
+}
+
+tr{
+  margin: 0px;
+  padding: 0px;
+}
+
+#error {
+  font-size : 120%;
+}
+	
+#layout {
+  margin: 0px;
+  padding: 0px;
+  width 100%;
+  border 0px;
+}
+
+
+#navigator {
+  border-bottom: 1px solid #a00000;
+  margin-left: 1em;
+}
+
+#navigator a{
+  color: #448;
+  text-decoration: none;
+  font-weight: bold;
+  margin-left: 1em;
+}
+
+h1 {
+  color: white;
+  margin: 5px;
+  width: 680px;
+  height: 105px;
+}
+
+#index_title {
+  background-image: url(./image/eyes.jpg);
+  width: 690px;
+  height: 120px;
+  text-align: right;
+  padding-right: 10px;
+}
+
+#new_title {
+  background-image: url(./image/down.jpg);
+  padding-top: 15px;
+  padding-left: 20px;
+}
+
+#list_title {
+  background-image: url(./image/snow.jpg);
+  padding-top: 15px;
+  padding-left: 20px;
+}
+
+#delete_title {
+  background-image: url(./image/snow.jpg);
+  padding-top: 15px;
+  padding-left: 20px;
+}
+
+#summary {
+  margin-left: 1em;
+  color: #777;
+}
+
+input:focus {
+  background-color: #ffffe0;
+}

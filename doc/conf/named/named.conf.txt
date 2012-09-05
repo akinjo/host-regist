@@ -1,0 +1,416 @@
+options {
+	directory "/var/named";
+	dump-file "/var/named/data/cache_dump.db";
+	statistics-file "/var/named/data/named_stats.txt";
+	allow-transfer {
+        	133.13.48.2;
+                2001:2f8:1c:d048::850d:3002;
+                133.13.48.3;
+                2001:2f8:1c:d048::850d:3003;
+                133.13.48.6;
+                2001:2f8:1c:d048::850d:3006;
+                133.13.48.7;    
+                2001:2f8:1c:d048::850d:3007;
+
+		133.13.50.66;           // MS 
+		2001:2f8:1c:d04b::2;	// MS
+		133.13.50.130;		// NC
+		2001:2f8:1c:d04c::2; // NC
+		133.13.51.2;		// NEO
+		2001:2f8:1c:d04d::2; // NEO
+		133.13.52.5;		// ADS
+		2001:2f8:1c:d04e::2;	// ADS
+		133.13.52.130;		// SYS
+		2001:2f8:1c:d04f::2; // SYS
+		133.13.7.2;		// CC
+		133.13.254.14;		// CC
+
+        };
+        transfer-format many-answers;
+        allow-query { any; };
+        listen-on-v6 { any ; };
+        query-source-v6 address 2001:2f8:1c:d048::850d:3003;
+        transfer-source-v6 2001:2f8:1c:d048::850d:3003;
+        notify-source-v6 2001:2f8:1c:d048::850d:3003;
+};
+
+logging{
+        channel my_file {
+                file "/var/log/msgs.log";
+                severity info;
+                print-category yes;
+                print-severity yes;
+        };
+
+        channel default-log {
+                file "/var/log/named.log" versions 5 size 1m; 
+                severity info; 
+                print-time yes;
+                print-category yes;
+                print-severity yes;
+        };
+
+        category lame-servers { null; };
+        category default { default-log; };
+};
+
+include "/etc/rndc.key";
+// 
+// a caching only nameserver config
+// 
+controls {
+	inet 127.0.0.1 allow { localhost; } keys { rndckey; };
+};
+
+zone "." IN {
+	type hint;
+	file "named.ca";
+};
+
+zone "localdomain" IN {
+	type master;
+	file "localdomain.zone";
+	allow-update { none; };
+};
+
+zone "localhost" IN {
+	type master;
+	file "localhost.zone";
+	allow-update { none; };
+};
+
+zone "0.0.127.in-addr.arpa" IN {
+	type master;
+	file "named.local";
+	allow-update { none; };
+};
+
+zone "0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.0.ip6.arpa" IN {
+	type master;
+	file "named.ip6.local";
+	allow-update { none; };
+};
+
+zone "255.in-addr.arpa" IN {
+	type master;
+	file "named.broadcast";
+	allow-update { none; };
+};
+
+zone "0.in-addr.arpa" IN {
+	type master;
+	file "named.zero";
+	allow-update { none; };
+};
+
+
+zone "ie.u-ryukyu.ac.jp" {
+	type master;
+	database "pgsql named ie 133.13.48.3 postgres password";
+};
+zone "st.ie.u-ryukyu.ac.jp" {
+        type master;
+        database "pgsql named st 133.13.48.3 postgres password";
+};
+
+zone "jm.ie.u-ryukyu.ac.jp" {
+        type master;
+        database "pgsql named jm 133.13.48.3 postgres password";
+};
+
+zone "cs.ie.u-ryukyu.ac.jp" {
+        type master;
+        database "pgsql named cs 133.13.48.3 postgres password";
+};
+
+zone "pc.ie.u-ryukyu.ac.jp" {
+        type master;
+        database "pgsql named pc 133.13.48.3 postgres password";
+};
+
+
+zone "iip.ie.u-ryukyu.ac.jp" {
+        type master;
+        database "pgsql named iip 133.13.48.3 postgres password";
+};
+
+zone "dsp.ie.u-ryukyu.ac.jp" {
+        type master;
+        database "pgsql named dsp 133.13.48.3 postgres password";
+};
+
+zone "eva.ie.u-ryukyu.ac.jp" {
+        type master;
+        database "pgsql named eva 133.13.48.3 postgres password";
+};
+
+zone "nal.ie.u-ryukyu.ac.jp" {
+        type master;
+        database "pgsql named nal 133.13.48.3 postgres password";
+};
+
+zone "tea.ie.u-ryukyu.ac.jp" {
+        type master;
+        database "pgsql named tea 133.13.48.3 postgres password";
+};
+
+zone "lsi.ie.u-ryukyu.ac.jp" {
+        type master;
+        database "pgsql named lsi 133.13.48.3 postgres password";
+};
+
+zone "engr.ie.u-ryukyu.ac.jp" {
+        type master;
+        database "pgsql named engr 133.13.48.3 postgres password";
+};
+
+zone "cr.ie.u-ryukyu.ac.jp" {
+        type master;
+        database "pgsql named cr 133.13.48.3 postgres password";
+};
+
+zone "fts.ie.u-ryukyu.ac.jp" {
+        type master;
+        database "pgsql named fts 133.13.48.3 postgres password";
+};
+
+
+zone "48.13.133.in-addr.arpa" {
+        type master;
+        database "pgsql named rev_48 133.13.48.3 postgres password";
+};
+
+zone "49.13.133.in-addr.arpa" {
+        type master;
+        database "pgsql named rev_49 133.13.48.3 postgres password";
+};
+
+zone "50.13.133.in-addr.arpa" {
+        type master;
+        database "pgsql named rev_50 133.13.48.3 postgres password";
+};
+/*
+zone "51.13.133.in-addr.arpa" {
+        type master;
+        database "pgsql named rev_51 133.13.48.3 postgres password";
+};
+*/
+
+zone "52.13.133.in-addr.arpa" {
+        type master;
+        database "pgsql named rev_52 133.13.48.3 postgres password";
+};
+
+zone "53.13.133.in-addr.arpa" {
+        type master;
+        database "pgsql named rev_53 133.13.48.3 postgres password";
+};
+
+zone "54.13.133.in-addr.arpa" {
+        type master;
+        database "pgsql named rev_54 133.13.48.3 postgres password";
+};
+
+zone "55.13.133.in-addr.arpa" {
+        type master;
+        database "pgsql named rev_55 133.13.48.3 postgres password";
+};
+
+zone "56.13.133.in-addr.arpa" {
+        type master;
+        database "pgsql named rev_56 133.13.48.3 postgres password";
+};
+
+zone "57.13.133.in-addr.arpa" {
+        type master;
+        database "pgsql named rev_57 133.13.48.3 postgres password";
+};
+
+zone "58.13.133.in-addr.arpa" {
+        type master;
+        database "pgsql named rev_58 133.13.48.3 postgres password";
+};
+
+zone "59.13.133.in-addr.arpa" {
+        type master;
+        database "pgsql named rev_59 133.13.48.3 postgres password";
+};
+
+zone "60.13.133.in-addr.arpa" {
+        type master;
+        database "pgsql named rev_60 133.13.48.3 postgres password";
+};
+
+zone "61.13.133.in-addr.arpa" {
+        type master;
+        database "pgsql named rev_61 133.13.48.3 postgres password";
+};
+
+zone "62.13.133.in-addr.arpa" {
+        type master;
+        database "pgsql named rev_62 133.13.48.3 postgres password";
+};
+
+zone "63.13.133.in-addr.arpa" {
+        type master;
+        database "pgsql named rev_63 133.13.48.3 postgres password";
+};
+
+zone "8.4.0.d.c.1.0.0.8.f.2.0.1.0.0.2.ip6.arpa" {
+        type master;
+        database "pgsql named rev6_48 133.13.48.3 postgres password";
+};
+
+zone "9.4.0.d.c.1.0.0.8.f.2.0.1.0.0.2.ip6.arpa" {
+        type master;
+        database "pgsql named rev6_49 133.13.48.3 postgres password";
+};
+
+zone "a.4.0.d.c.1.0.0.8.f.2.0.1.0.0.2.ip6.arpa" {
+        type master;
+        database "pgsql named rev6_4a 133.13.48.3 postgres password";
+};
+
+zone "0.5.0.d.c.1.0.0.8.f.2.0.1.0.0.2.ip6.arpa" {
+        type master;
+        database "pgsql named rev6_50 133.13.48.3 postgres password";
+};
+
+zone "ms.ie.u-ryukyu.ac.jp" {
+	type slave;
+	file "slaves/ms.cache";
+	masters {
+		133.13.50.66;
+		//2001:2f8:1c:d048:21::2;
+	};
+};
+
+zone "nc.ie.u-ryukyu.ac.jp" {
+	type slave;
+	file "slaves/nc.cache";
+	masters {
+		133.13.50.130;
+		//2001:2f8:1c:d048:22::2;
+	};
+};
+
+zone "neo.ie.u-ryukyu.ac.jp" {
+	type slave;
+	file "slaves/neo.cache";
+	masters {
+		133.13.51.2;
+		2001:2f8:1c:d048:23::2;
+	};
+};
+
+zone "ads.ie.u-ryukyu.ac.jp" {
+	type slave;
+	file "slaves/ads.cache";
+	masters {
+		133.13.52.5;
+		//2001:2f8:1c:d048:24::2;
+	};
+};
+
+
+zone "sys.ie.u-ryukyu.ac.jp" {
+	type slave;
+	file "slaves/sys.cache";
+	masters {
+		133.13.52.130;
+		2001:2f8:1c:d048:25::2;
+	};
+};
+
+
+zone "64-127.50.13.133.in-addr.arpa" {
+	type slave;
+	file "slaves/ipv4/64-127.50.13.133.cache";
+	masters {
+		133.13.50.66;
+		//2001:2f8:1c:d048:21::2;
+	};
+};
+
+zone "128-191.50.13.133.in-addr.arpa" {
+	type slave;
+	file "slaves/ipv4/128-191.50.13.133.cache";
+	masters {
+		133.13.50.130;
+		2001:2f8:1c:d048:22::2;
+	};
+};
+
+
+zone "51.13.133.in-addr.arpa" {
+	type slave;
+	file "slaves/ipv4/51.13.133.cache";
+	masters {
+		133.13.51.2;
+		2001:2f8:1c:d048:23::2;
+	};
+};
+
+zone "0-127.52.13.133.in-addr.arpa"{
+	type slave;
+	file "slaves/ipv4/0-127.52.13.133.cache";
+	masters {
+		133.13.52.5;
+		//2001:2f8:1c:d048:24::2;
+	};
+};
+
+zone "128-191.52.13.133.in-addr.arpa"{
+	type slave;
+	file "slaves/ipv4/128-191.52.13.133.cache";
+	masters {
+		133.13.52.130;
+		2001:2f8:1c:d048:25::2;
+	};
+};
+
+zone "b.4.0.d.c.1.0.0.8.f.2.0.1.0.0.2.ip6.arpa" {
+	type slave;
+	file "slaves/ipv6/2001.1c.2f8.1c.d04b.cache";
+	masters {
+		133.13.50.66;
+		//2001:2f8:1c:d048:21::2;
+	};
+};
+
+zone "c.4.0.d.c.1.0.0.8.f.2.0.1.0.0.2.ip6.arpa" {
+	type slave;
+	file "slaves/ipv6/2001.1c.2f8.1c.d04c.cache";
+	masters {
+		133.13.50.130;
+		//2001:2f8:1c:d048:22::2;
+	};
+};
+
+zone "d.4.0.d.c.1.0.0.8.f.2.0.1.0.0.2.ip6.arpa" {
+	type slave;
+	file "slaves/ipv6/2001.1c.2f8.1c.d04d.cache";
+	masters {
+		133.13.51.2;
+		//2001:2f8:1c:d048:23::2;
+	};
+};
+
+zone "e.4.0.d.c.1.0.0.8.f.2.0.1.0.0.2.ip6.arpa" {
+	type slave;
+	file "slaves/ipv6/2001.1c.2f8.1c.d04e.cache";
+	masters {
+		133.13.52.5;
+		//2001:2f8:1c:d048:24::2;
+	};
+};
+
+zone "f.4.0.d.c.1.0.0.8.f.2.0.1.0.0.2.ip6.arpa" {
+	type slave;
+	file "slaves/ipv6/2001.1c.2f8.1c.d04f.cache";
+	masters {
+		133.13.52.130;
+		//2001:2f8:1c:d048:25::2;
+	};
+};
+
